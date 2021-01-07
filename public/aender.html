@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+   <head>
+     <title>Home Workout</title>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/style.css/">
+    
+    <script>
+      
+      //Speichern von Zeit pro uebung pro pause und durchgang
+      function speichern() {
+          //sessionStorage.clear();  
+          sessionStorage.setItem("Trainingszeit", document.getElementById("Trainingszeit").value); 
+          sessionStorage.setItem("Pause", document.getElementById("Pause").value); 
+          sessionStorage.setItem("Durchgaenge", document.getElementById("Durchgaenge").value); 
+          //console.log(sessionStorage.getItem("Trainingszeit"));
+          //console.log(sessionStorage.getItem("Pause"));
+          //console.log(sessionStorage.getItem("Durchgaenge"));
+        }
+        
+      //button enebalen wenn user alles ausfuellt
+      function success() {
+        if(document.getElementById("Trainingszeit").value==="" || document.getElementById("Pause").value==="" || document.getElementById("Durchgaenge").value==="") { 
+            document.getElementById('button').disabled = true; 
+        } else { 
+            document.getElementById('button').disabled = false;
+          }
+       }
+       
+       
+       var uebungenMap = new Map();
+       
+       var count = 1;       
+       var liste = [];
+       while (true) {
+          var temp = "uebung" + count;
+          if (sessionStorage.getItem(temp) == null) {
+            break;
+          } else {
+          if (sessionStorage.getItem(temp) != "delete") {
+          uebungenMap.set(temp, sessionStorage.getItem(temp));
+          liste.push(sessionStorage.getItem(temp));
+          count++;
+        } else {
+          count++;
+        }
+          
+        }
+       }
+       
+        //console.log("Vor button loeschen: liste: " + liste.toString());
+       
+       
+    function loescheuebung() {
+          var e = document.getElementById("inputGroupSelect02");
+          var result = e.options[e.selectedIndex].value;
+          //console.log(uebungenMap.size);
+          var zaehl = 1; //variable mitzahlen solange default 5 uebungen beabreitet werden wird nicht removet sonder delete hinzugefueggt
+         
+        
+       if (liste.length > 1) {
+          for (var [key, value] of uebungenMap) {
+            if (value == result) {
+              if (zaehl < 6) {
+              //console.log("userwill loeschen " + value + " mit dem key: " + key);
+              //console.log("gefunden in zentral liste: " + sessionStorage.getItem(key));
+              sessionStorage.setItem(key, "delete");
+              //console.log("eintrag jetz im session storage " + sessionStorage.getItem(key));
+              zaehl++;
+              
+            } else {
+              sessionStorage.removeItem(key);
+            }
+          }
+        }
+      } else {
+        
+        alert("Sie benötigen mindestens eine Übung");
+      } 
+        
+         //console.log(sessionStorage.getItem("uebung1"));
+         //console.log(sessionStorage.getItem("uebung2")); 
+         //console.log(sessionStorage.getItem("uebung3")); 
+         //console.log(sessionStorage.getItem("uebung4")); 
+         //console.log(sessionStorage.getItem("uebung5"));  
+         //console.log(liste.toString());
+         //neu laden damit dropwdown befüllt wird
+        location.reload(); 
+       }
+       
+       
+       function neueuebung() {
+         var count = 6;
+          while (true) {
+              var temp = "uebung" + count;
+              if (sessionStorage.getItem(temp) == null) {
+                sessionStorage.setItem(temp,document.getElementById("neueUebung").value);
+                break;
+              } else {
+              count++;
+              }
+          }
+          //console.log(sessionStorage.getItem("Neu ANlage: " + temp));
+         //neu laden damit dropwdown befüllt wird
+        location.reload(); 
+         
+      }
+  
+      
+  
+    </script>
+   </head>
+   <body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">TRAINING</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item active">
+          <a class="nav-link" aria-current="page" href="#">Ändern</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Über</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="#">Hinzufügen</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <br>
+      <h2>Passe dein Training an</h2>
+      <p class="lead">Wie willst du trainieren ?</p>
+    </div>
+    
+    <form action="/" class="row g-3 needs-validation" novalidate>
+      
+            <div class="col-md-3">
+              <label for="Zeit" class="form-label">Zeit pro Übung</label>
+              <input type="number" class="form-control" id="Trainingszeit" onkeyup="success()" name="Trainingszeit" placeholder="60" max="600" required>
+                  <div class="invalid-feedback">
+                  Wielange dauert eine Übung ?
+                  </div>
+            </div>
+            
+            <div class="col-md-3">
+              <label for="Pause" class="form-label">Pause</label>
+              <input type="number" class="form-control" id="Pause" onkeyup="success()" name="Pause" placeholder="60" max="600" required>
+              <div class="invalid-feedback">
+                  Wielange machst du Pause ?
+            </div>
+            </div>
+            
+            <div class="col-md-3">
+              <label for="Durchgaenge" class="form-label">Anzahl Durchgänge</label>
+              <input type="number" class="form-control" id="Durchgaenge" onkeyup="success()" name="Durchgaenge" placeholder="2" max="60" required>
+              <div class="invalid-feedback">
+                  Wieviel Durchgänge machst du ?
+                  </div>
+            </div>
+            
+            
+            
+            <!--onclick=speichern() -->
+          <button class="w-100 btn btn-primary btn-lg" id="button" type="submit" onclick=speichern() disabled>Speichern</button>
+          
+        </form>
+
+        <hr class="my-4">
+        <br>
+        
+<div class="input-group mb-3">
+  <select class="form-select" id="inputGroupSelect02">
+    <!--<option id ="first" selected>Übung</option>-->
+    <script>
+      
+      for (i = 0; i < liste.length; i++) {
+        if (liste[i] == null || liste[i] == "delete") {
+        } else {
+       var element = document.createElement('option');
+        element.innerHTML = liste[i];
+        document.getElementById("inputGroupSelect02").appendChild(element);
+      }
+      }
+    
+    </script>
+  </select>
+  <button class="btn btn-outline-danger" id="loeschbutton" type="button" onclick=loescheuebung()>Löschen</button>
+</div>
+
+
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Neue Übung" id="neueUebung" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <button class="btn btn-outline-success" type="button" id="button-addon2" onclick=neueuebung()>Hinzufügen</button>
+</div>
+            
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="/javascripts/form-validation.js"></script>
+    </body>
+</html>
