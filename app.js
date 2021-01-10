@@ -29,6 +29,12 @@ app.get('/aendern', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/aender.html'));
 });
 
+app.get('/hinzufuegen', function (req, res) {
+  res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'");
+  res.sendFile(path.join(__dirname + '/public/hinzufuegen.html'));
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

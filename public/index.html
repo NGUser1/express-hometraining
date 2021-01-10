@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="/stylesheets/style.css/">-->
-   </head>
+   <script src="/javascripts/logic.js"></script>
+
+</head>
    <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -25,18 +27,13 @@
           <a class="nav-link" href="#">Über</a>
         </li>
 	<li class="nav-item">
-          <a class="nav-link" href="#">Hinzufügen</a>
+          <a class="nav-link" href="/hinzufuegen">Hinzufügen</a>
         </li>
 	
       </ul>
     </div>
   </div>
 </nav>
-
-<!--
-<main class="container">
-  <div class="starter-template text-center py-5 px-3">
-  -->
    <audio id="sound">   
 	<source src="beep-02.wav" />   
 	</audio>
@@ -44,16 +41,6 @@
 	<source src="win.wav" />   
     </audio>
 	
-	<!--
-	<h1 id="Timeleft"></h1> 
-	<p class="lead" id="Anweisung"></p>
-	<button class="btn btn-primary btn-lg" onclick=starttraining()>START</button>
-	-->
-<!--
-  </div>
-</main>
--->
-
 <main>
 
   <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
@@ -61,6 +48,16 @@
       <h1 class="display-4 fw-normal" id="Timeleft">-Zeit-</h1>
       <p class="lead fw-normal" id="Anweisung">-Übung-<br>Starte dein Training</p>
       <a class="btn btn-primary btn-lg" onclick=starttraining()>START</a>
+      <br>
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" style="border: solid black">
+	<h2 class="display-4 fw-normal">Aktuelles Training</h2>	
+	<p class="lead fw-normal"><script>document.write(sessionStorage.getItem("Durchgaenge"));</script> Einheit(en)</p>
+	<script>
+	document.write(getListe());
+	</script>
+	<br>	
+	<p class="lead fw-normal"><script>document.write(sessionStorage.getItem("Pause"));</script> Sekunden Pause</p>
+</div>
     </div>
   </div>
   
@@ -132,7 +129,7 @@
 -->
 
 
-<script src="/javascripts/logic.js"></script>
+<!--<script src="/javascripts/logic.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     </body>
 </html>

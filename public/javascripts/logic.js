@@ -17,6 +17,9 @@ if (sessionStorage.getItem("Trainingszeit") == null || sessionStorage.getItem("P
 	var pause = 60; //sekunden
 	var Zeit = 60; //sekunden
 	var durchgang = 1; //druchgaenge
+	sessionStorage.setItem("Trainingszeit", Zeit);
+	sessionStorage.setItem("Pause", pause);
+	sessionStorage.setItem("Durchgaenge", durchgang);
 } else {
 	var Zeit = sessionStorage.getItem("Trainingszeit");
 	var pause = sessionStorage.getItem("Pause");
@@ -27,8 +30,10 @@ var Startzeit = Zeit;
 var StartPause = pause;
 var Startdurchgaenge = durchgang;
 
-const mySound = document.getElementById("sound");
-const winSound = document.getElementById("win-sound");
+//const mySound = document.getElementById("sound");
+//const winSound = document.getElementById("win-sound");
+var mySound;
+var winSound;
 //var uebungen = ["Liegestütze", "Situps", "Kniebeugen", "Schattenboxen", "Seilspringen"];
 var uebungen = [];
 
@@ -53,6 +58,10 @@ var myVardisplay; // test
 var counter = 0;
 
 function starttraining() {
+	//Test
+	mySound = document.getElementById("sound");
+	winSound = document.getElementById("win-sound");
+	//ende test
 	console.log("START TRAINING");
 	//document.getElementById("Timeleft").innerHTML = Zeit;
 	//document.getElementById("Anweisung").innerHTML = uebungen[Uebungsauswahl];
@@ -95,10 +104,13 @@ function calctime() {
 			reset();
 		}
 	} else if (Zeit == 0) {
+		if (Uebungsauswahl != uebungen.length) {
 		//console.log(uebungen[Uebungsauswahl]);
 		//console.log(" vorbei");
 		//console.log("Uebung nummer" + Uebungsauswahl);
-		mySound.play();
+		//mySound.play();
+			speak(uebungen[Uebungsauswahl+1]);
+		}
 		Zeit = Startzeit; //startzeit da user vielelciht startzeit geaendert hat
 		Uebungsauswahl++;
 	}
@@ -152,3 +164,28 @@ function getaktUebungen() {
         //console.log(uebungen.length);
         
        }
+
+ function speak(nach) { 
+	var msg = new SpeechSynthesisUtterance();
+	msg.text = nach;
+	msg.lang = 'de-DE';
+	msg.volume = 1; // 0 to 1
+	msg.rate = 1; // 0.1 to 10
+	msg.pitch = 2; //0 to 2
+
+	msg.onend = function(e) {
+         document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
+	};
+	speechSynthesis.speak(msg);  
+  }
+
+var txt="";
+function getListe() {
+      uebungen.forEach(myFunction); 
+      //var text = "<li>" + "Text" + "</li>"
+      return txt;
+}
+function myFunction(value) {
+  txt = txt + "<li>" + value + " " + sessionStorage.getItem("Trainingszeit") + " Sekunden " + "</li>"; 
+}
+
