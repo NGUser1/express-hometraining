@@ -1,9 +1,4 @@
 
-
-//console.log(sessionStorage.getItem("Trainingszeit"));
-//console.log(sessionStorage.getItem("Pause"));
-//console.log(sessionStorage.getItem("Durchgaenge"));
-
 //zusatzeliche pruefeung der maximal werte da dies von aender.html gesendet werden kann
 if (sessionStorage.getItem("Trainingszeit") > 600 || sessionStorage.getItem("Pause") > 600 || sessionStorage.getItem("Durchgaenge") > 60) {
 	//sessionStorage.clear(); 
@@ -47,7 +42,6 @@ sessionStorage.setItem("uebung5","Seilspringen");
 }
 
 getaktUebungen();
-
 //var pause = 60;
 //var durchgang = 1;
 //var Zeit = 60; 
@@ -56,20 +50,28 @@ var Uebungsauswahl = 0; //0 1 2 3 4
 var myVar;
 var myVardisplay; // test
 var counter = 0;
+//fuer Progres bar
+var tmpnum = 0;
+var tmpnumcounter = 0;
 
 function starttraining() {
+	//werte beim starten resetten
+	if (tmpnum == 100) {
+		tmpnum = 0;
+		tmpnumcounter = 0;
+		document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',0);
+		document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+0+'%');
+	}
+	document.getElementById('Startbutton').disabled = true;
 	//Test
 	mySound = document.getElementById("sound");
 	winSound = document.getElementById("win-sound");
 	//ende test
 	console.log("START TRAINING");
-	//document.getElementById("Timeleft").innerHTML = Zeit;
-	//document.getElementById("Anweisung").innerHTML = uebungen[Uebungsauswahl];
-	mySound.play();
-	
+	//mySound.play();
+	speak(uebungen[Uebungsauswahl]);
 	//myTimer(); 
 	myVardisplay = setInterval(myTimer, 500); //Test
-	//myVar = setInterval(myTimer, 1000);
 	myVar = setInterval(calctime, 1000);
  }
 function myTimer() {
@@ -81,7 +83,7 @@ function calctime() {
 	Zeit--;
 	if (Zeit == 0 && Uebungsauswahl == (uebungen.length - 1)) {
 		counter++;
-		console.log(counter);
+		//console.log(counter);
 		//mySound.play();
 		clearInterval(myVar);
 		if (counter != durchgang) {
@@ -91,6 +93,11 @@ function calctime() {
 			mySound.play();
 			document.getElementById("Timeleft").innerHTML = pause;
 			document.getElementById("Anweisung").innerHTML ="PAUSE";
+			tmpnumcounter++;
+			tmpnum = ((tmpnumcounter / uebungen.length) * 100) / durchgang;
+                        document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',tmpnum);
+                        document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+tmpnum+'%');
+
 			myVar = setInterval(Pause, 1000);
 			//Pause();
 		} else {
@@ -102,17 +109,34 @@ function calctime() {
 			document.getElementById("Timeleft").innerHTML = "FERTIG";
 			document.getElementById("Anweisung").innerHTML = "";
 			reset();
-		}
+			document.getElementById('Startbutton').disabled = false;
+			tmpnumcounter++;
+			tmpnum = ((tmpnumcounter / uebungen.length) * 100) / durchgang;
+			document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',tmpnum);
+	                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+tmpnum+'%');
+	}
 	} else if (Zeit == 0) {
-		if (Uebungsauswahl != uebungen.length) {
+		//if (Uebungsauswahl != uebungen.length) {
 		//console.log(uebungen[Uebungsauswahl]);
 		//console.log(" vorbei");
 		//console.log("Uebung nummer" + Uebungsauswahl);
 		//mySound.play();
-			speak(uebungen[Uebungsauswahl+1]);
-		}
+		//	speak(uebungen[Uebungsauswahl+1]);
+		//}
 		Zeit = Startzeit; //startzeit da user vielelciht startzeit geaendert hat
 		Uebungsauswahl++;
+		tmpnumcounter++;
+		if (Uebungsauswahl != uebungen.length) {
+                //console.log(uebungen[Uebungsauswahl]);
+                //console.log(" vorbei");
+                //console.log("Uebung nummer" + Uebungsauswahl);
+                //mySound.play();
+                        speak(uebungen[Uebungsauswahl]);
+                }
+		tmpnum = ((tmpnumcounter / uebungen.length) * 100) / durchgang;
+		document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',tmpnum);
+	        document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+tmpnum+'%');
+
 	}
 }
 
@@ -122,12 +146,13 @@ function Pause() {
 	document.getElementById("Anweisung").innerHTML ="PAUSE";
 	if (pause == 0) {
 		console.log("PAUSE vorbei");
-		mySound.play();
+		//mySound.play();
 		Zeit = Startzeit;
 		Uebungsauswahl = 0;
 		clearInterval(myVar);
 		pause = StartPause; //fuer den naechsten durhcgang pause zuruecksetzen
 		starttraining();
+		//speak(uebungen[Uebungsauswahl]);
 	}
 }
 
