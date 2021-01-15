@@ -2,29 +2,31 @@
 <html lang="de">
 <head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
-<script>
-  var origin = window.location.origin;
-  var socket = io.connect(origin);
-  socket.on();
-</script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-
 </head>
 <body>
-  
-<div class="container">
-  <main>
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Text" id="Nachricht" aria-label="Recipient's username" aria-describedby="button-addon2">
-  <button class="btn btn-outline-success" type="button" id="button-senden">Senden</button>
-</div>
-</main>
+<div id="container">
+    <h1><a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a>
+        <span>getUserMedia</span></h1>
+
+    <video id="gum-local" autoplay playsinline></video>
+    <button id="showVideo">Open camera</button>
+
+    <div id="errorMsg"></div>
+
+    <p class="warning"><strong>Warning:</strong> if you're not using headphones, pressing play will cause feedback.</p>
+
+    <p>Display the video stream from <code>getUserMedia()</code> in a video element.</p>
+
+    <p>The <code>MediaStream</code> object <code>stream</code> passed to the <code>getUserMedia()</code> callback is in
+        global scope, so you can inspect it from the console.</p>
+
+    <a href="https://github.com/webrtc/samples/tree/gh-pages/src/content/getusermedia/gum"
+       title="View source for this page on GitHub" id="viewSource">View source on GitHub</a>
 </div>
 
+
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="/javascripts/hinzufuegen_logic.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>
 </html>
